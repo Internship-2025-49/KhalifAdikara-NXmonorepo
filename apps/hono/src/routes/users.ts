@@ -7,7 +7,7 @@ import { createUser, deleteUser, getUserById, getUsers, updateUser } from '../co
 import { loginUser } from '../controllers/AuthControllers.js'
 import dotenv from 'dotenv'
 import { db } from '../db/index.js'
-import { userSchema } from '../../../shared/userSchema.js'
+import { userSchema } from '../../../shared/types/userSchema.js'
 import { zValidator } from '@hono/zod-validator'
 
 dotenv.config()

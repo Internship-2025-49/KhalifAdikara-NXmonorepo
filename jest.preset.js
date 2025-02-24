@@ -1,3 +1,5 @@
-const nxPreset = require('@nx/jest/preset').default;
-
-module.exports = { ...nxPreset };
+export default {
+    transform: {
+        '^.+\\.[tj]sx?$': 'babel-jest',
+    },
+};

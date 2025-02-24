@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1740369807052,
+      "tag": "0000_conscious_blue_marvel",
+      "breakpoints": true
+    }
+  ]
+}

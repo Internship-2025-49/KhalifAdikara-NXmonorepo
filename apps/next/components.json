@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "tailwind.config.js",
+    "css": "src/app/global.css",
+    "baseColor": "zinc",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "aliases": {
+    "components": "@nx-monorepo/libs/server/components",
+    "utils": "@nx-monorepo/libs/server/lib/utils",
+    "ui": "@nx-monorepo/libs/server/components/ui",
+    "lib": "@nx-monorepo/libs/server/lib",
+    "hooks": "@nx-monorepo/libs/server/hooks"
+  },
+  "iconLibrary": "lucide"
+}

@@ -1,15 +1,30 @@
-import { serve } from '@hono/node-server'
-import { Hono } from 'hono'
+import dotenv from 'dotenv';
+dotenv.config();
 
-const app = new Hono()
+import { serve } from '@hono/node-server';
+import { Hono } from 'hono';
+import { handle } from 'hono/vercel';
+import { cors } from 'hono/cors';
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+import users from './routes/users.js';
+
+const app = new Hono().basePath('/api');
+
+app.use('*', cors());
+
+app.route('/users', users);
+
+const port = 3000;
+console.log(`Server is running on http://localhost:${port}`);
 
 serve({
   fetch: app.fetch,
-  port: 3000
-}, (info) => {
-  console.log(`Server is running on http://localhost:${info.port}`)
-})
+  port
+});
+
+export const GET = handle(app);
+export const POST = handle(app);
+export const PUT = handle(app);
+export const DELETE = handle(app);
+
+export type AppType = typeof app;

@@ -2,10 +2,10 @@
 "use client";
 
 import React from 'react';
-import { Input } from '../../../../../@nx-monorepo/libs/server/components/ui/input';
-import { Textarea } from '../../../../../@nx-monorepo/libs/server/components/ui/textarea';
-import { Button } from '../../../../../@nx-monorepo/libs/server/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../../../../@nx-monorepo/libs/server/components/ui/form';
+import { Input } from "@nx-monorepo/component";
+import { Textarea } from "@nx-monorepo/component";
+import { Button } from "@nx-monorepo/component"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@nx-monorepo/component";
 import { FormProps } from '../../../../shared/types/users';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -32,7 +32,7 @@ export default function UserForm({ user, titleText, buttonText }: FormProps) {
     
     const mutation = useMutation({
         mutationFn: (data: userForm) => {
-            if (user) {
+            if (user && user.id) {
                 return updateUser({ id: user.id}, data)
             } else {
                 return createUser(data)
@@ -62,7 +62,7 @@ export default function UserForm({ user, titleText, buttonText }: FormProps) {
                             <FormControl>
                                 <Input placeholder='Enter username' {...field}  />
                             </FormControl>
-                            <FormMessage/>
+                            <FormMessage className='text-red-500'/>
                         </FormItem>
                     )}
                     />
@@ -75,7 +75,7 @@ export default function UserForm({ user, titleText, buttonText }: FormProps) {
                             <FormControl>
                                 <Input placeholder='Enter name' {...field}  />
                             </FormControl>
-                            <FormMessage/>
+                            <FormMessage className='text-red-500'/>
                         </FormItem>
                     )}
                     />
@@ -88,7 +88,7 @@ export default function UserForm({ user, titleText, buttonText }: FormProps) {
                             <FormControl>
                                 <Textarea placeholder='Enter address' {...field}  />
                             </FormControl>
-                            <FormMessage/>
+                            <FormMessage className='text-red-500'/>
                         </FormItem>
                     )}
                     />
@@ -101,7 +101,7 @@ export default function UserForm({ user, titleText, buttonText }: FormProps) {
                             <FormControl>
                                 <Input placeholder='Enter phone number' {...field}  />
                             </FormControl>
-                            <FormMessage/>
+                            <FormMessage className='text-red-500'/>
                         </FormItem>
                     )}
                     />

@@ -1,9 +1,56 @@
 /* eslint-disable @nx/enforce-module-boundaries */
+"use client";
+
 import React from 'react'
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../../../../@nx-monorepo/libs/server/components/ui/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@nx-monorepo/component"
+import { Button } from '@nx-monorepo/component';
+import { Trash, Pencil, View } from 'lucide-react';
+import Link from 'next/link';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { deleteUser } from '../utils/queries/users/[id]/query';
+import { UserModel } from '../../../../shared/types/users';
 
-export default function DataTable<TData, TValue>({ columns, data }: { columns: ColumnDef<TData, TValue>[]; data: TData[] }) {
+export default function DataTable({ data }: { data: UserModel[] }) {
+    const queryClient = useQueryClient();
+    const mutation = useMutation({
+        mutationFn: (id: number) => deleteUser({ id }),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['users'] });
+        },
+    });
+
+    const columns: ColumnDef<UserModel>[] = [
+        { accessorKey: "id", header: "ID" },
+        { accessorKey: "username", header: "Username" },
+        { accessorKey: "name", header: "Name" },
+        { accessorKey: "address", header: "Address" },
+        { accessorKey: "phone", header: "Phone" },
+        {
+            header: "Actions",
+            cell: ({ row }) => (
+                <div className="flex gap-2">
+                    <Button variant="destructive" size="sm" onClick={() => mutation.mutate(row.original.id)}>
+                        <Trash />
+                        Delete
+                    </Button>
+                    <Link href={`/users/${row.original.id}/edit`}>
+                        <Button variant="outline" size="sm">
+                            <Pencil />
+                            Edit
+                        </Button>
+                    </Link>
+                    <Link href={`/users/${row.original.id}`}>
+                        <Button variant="outline" size="sm">
+                            <View />
+                            View
+                        </Button>
+                    </Link>
+                </div>
+            ),
+        }
+    ];
+
     const table = useReactTable({
         data,
         columns,
@@ -19,7 +66,7 @@ export default function DataTable<TData, TValue>({ columns, data }: { columns: C
                         <TableRow key={headerGroup.id}>
                         {headerGroup.headers.map((header) => {
                             return (
-                            <TableHead key={header.id}>
+                            <TableHead key={header.id} className="text-center">
                                 {header.isPlaceholder
                                 ? null
                                 : flexRender(

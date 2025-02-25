@@ -13,8 +13,8 @@ import {
   useFormState,
 } from "react-hook-form"
 
-import { cn } from "@nx-monorepo/libs/server/lib/utils"
-import { Label } from "@nx-monorepo/libs/server/components/ui/label"
+import { cn } from "../../lib/utils"
+import { Label } from "./label"
 
 const Form = FormProvider
 

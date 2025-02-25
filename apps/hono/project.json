@@ -1,0 +1,24 @@
+{
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "name": "hono",
+    "sourceRoot": "apps/hono/src",
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "@nx/node:build",
+            "options": {
+                "outputPath": "dist/apps/hono",
+                "main": "apps/hono/src/main.ts",
+                "tsConfig": "apps/hono/tsconfig.app.json",
+                "assets": ["apps/hono/src/assets"]
+            }
+        },
+        "serve": {
+            "executor": "@nx/node:execute",
+            "options": {
+                "buildTarget": "hono:build"
+            }
+        }
+    },
+    "tags": []
+}

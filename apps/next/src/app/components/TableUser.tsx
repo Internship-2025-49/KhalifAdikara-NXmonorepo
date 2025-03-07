@@ -31,19 +31,16 @@ export default function DataTable({ data }: { data: UserModel[] }) {
             cell: ({ row }) => (
                 <div className="flex gap-2">
                     <Button variant="destructive" size="sm" onClick={() => mutation.mutate(row.original.id)}>
-                        <Trash />
-                        Delete
+                        <Trash size='16' />
                     </Button>
                     <Link href={`/users/${row.original.id}/edit`}>
                         <Button variant="outline" size="sm">
-                            <Pencil />
-                            Edit
+                            <Pencil size='16' />
                         </Button>
                     </Link>
                     <Link href={`/users/${row.original.id}`}>
                         <Button variant="outline" size="sm">
-                            <View />
-                            View
+                            <View size='16' />
                         </Button>
                     </Link>
                 </div>

@@ -1,24 +1,15 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-"use client";
-
-import React from 'react'
+import React from 'react';
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@nx-monorepo/component"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@nx-monorepo/component";
 import { Button } from '@nx-monorepo/component';
 import { Trash, Pencil, View } from 'lucide-react';
 import Link from 'next/link';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteUser } from '../utils/queries/users/[id]/query';
 import { UserModel } from '../../../../shared/types/users';
+import { useDeleteUser } from '../utils/hooks/user';
 
 export default function DataTable({ data }: { data: UserModel[] }) {
-    const queryClient = useQueryClient();
-    const mutation = useMutation({
-        mutationFn: (id: number) => deleteUser({ id }),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['users'] });
-        },
-    });
+    const deleteUser = useDeleteUser();
 
     const columns: ColumnDef<UserModel>[] = [
         { accessorKey: "id", header: "ID" },
@@ -30,7 +21,7 @@ export default function DataTable({ data }: { data: UserModel[] }) {
             header: "Actions",
             cell: ({ row }) => (
                 <div className="flex gap-2">
-                    <Button variant="destructive" size="sm" onClick={() => mutation.mutate(row.original.id)}>
+                    <Button variant="destructive" size="sm" onClick={() => deleteUser.mutate(row.original.id)}>
                         <Trash size='16' />
                     </Button>
                     <Link href={`/users/${row.original.id}/edit`}>

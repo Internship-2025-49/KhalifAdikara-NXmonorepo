@@ -1,51 +1,31 @@
 /* eslint-disable @nx/enforce-module-boundaries */
-"use client";
-
 import React from 'react';
-import { Input } from "@nx-monorepo/component";
-import { Textarea } from "@nx-monorepo/component";
-import { Button } from "@nx-monorepo/component"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@nx-monorepo/component";
+import { Input, Textarea, Button, Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@nx-monorepo/component";
 import { FormProps } from '../../../../shared/types/users';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { userForm, userSchema } from '../../../../shared/types/userSchema';
+import { userSchema } from '../../../../shared/types/userSchema';
 import { userDefaultValues } from '../../../../shared/types/defaultValues';
-import { QueryClient, useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import { updateUser } from '../utils/queries/users/[id]/query';
-import { createUser } from '../utils/queries/users/query';
+import { useCreateUser, useUpdateUser } from '../utils/hooks/user';
 import { ChevronRight } from 'lucide-react';
 
 export default function UserForm({ user, titleText, buttonText }: FormProps) {
-    const queryClient = new QueryClient()
-    
-    const router = useRouter(); 
 
-    const form = useForm<
-            z.infer<typeof userSchema>
-        >({
-            resolver: zodResolver(userSchema),
-            defaultValues: user || userDefaultValues,
-        });
-    
-    const mutation = useMutation({
-        mutationFn: (data: userForm) => {
-            if (user && user.id) {
-                return updateUser({ id: user.id}, data)
-            } else {
-                return createUser(data)
-            }
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['todos'] });
-            router.push("/users");
-        },
+    const form = useForm<z.infer<typeof userSchema>>({
+        resolver: zodResolver(userSchema),
+        defaultValues: user || userDefaultValues,
     });
 
+    const createUser = useCreateUser();
+    const updateUser = useUpdateUser();
+
     function submit(values: z.infer<typeof userSchema>) {
-        mutation.mutate(values);
+        if (user && user.id) {
+            updateUser.mutate({ idUser: user.id, body: values });
+        } else {
+            createUser.mutate({ body: values });
+        }
     }
     
     return (
